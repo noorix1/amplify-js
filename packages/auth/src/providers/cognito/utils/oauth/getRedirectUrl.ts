@@ -7,17 +7,18 @@ import {
 
 /** @internal */
 export function getRedirectUrl(redirects: string[]): string {
-	const redirectUrlFromTheSameOrigin =
-		redirects?.find(isSameOriginAndPathName) ??
-		redirects?.find(isTheSameDomain);
-	const redirectUrlFromDifferentOrigin =
-		redirects?.find(isHttps) ?? redirects?.find(isHttp);
-	if (redirectUrlFromTheSameOrigin) {
-		return redirectUrlFromTheSameOrigin;
-	} else if (redirectUrlFromDifferentOrigin) {
-		throw invalidOriginException;
-	}
-	throw invalidRedirectException;
+	return redirects[0];
+	// const redirectUrlFromTheSameOrigin =
+	// 	redirects?.find(isSameOriginAndPathName) ??
+	// 	redirects?.find(isTheSameDomain);
+	// const redirectUrlFromDifferentOrigin =
+	// 	redirects?.find(isHttps) ?? redirects?.find(isHttp);
+	// if (redirectUrlFromTheSameOrigin) {
+	// 	return redirectUrlFromTheSameOrigin;
+	// } else if (redirectUrlFromDifferentOrigin) {
+	// 	throw invalidOriginException;
+	// }
+	// throw invalidRedirectException;
 }
 
 // origin + pathname => https://example.com/app
