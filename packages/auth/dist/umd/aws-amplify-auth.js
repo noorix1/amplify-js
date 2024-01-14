@@ -2872,21 +2872,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _aws_amplify_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @aws-amplify/core */ "@aws-amplify/core");
 /* harmony import */ var _aws_amplify_core_internals_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @aws-amplify/core/internals/utils */ "../core/dist/esm/singleton/Auth/utils/index.mjs");
 /* harmony import */ var _aws_amplify_core_internals_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @aws-amplify/core/internals/utils */ "../core/dist/esm/utils/urlSafeEncode.mjs");
-/* harmony import */ var _aws_amplify_core_internals_utils__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @aws-amplify/core/internals/utils */ "../core/dist/esm/Platform/types.mjs");
 /* harmony import */ var _utils_oauth_enableOAuthListener_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/oauth/enableOAuthListener.mjs */ "./dist/esm/providers/cognito/utils/oauth/enableOAuthListener.mjs");
 /* harmony import */ var _types_models_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../types/models.mjs */ "./dist/esm/providers/cognito/types/models.mjs");
-/* harmony import */ var _utils_getAuthUserAgentValue_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../utils/getAuthUserAgentValue.mjs */ "./dist/esm/utils/getAuthUserAgentValue.mjs");
-/* harmony import */ var _utils_openAuthSession_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../utils/openAuthSession.mjs */ "./dist/esm/utils/openAuthSession.mjs");
 /* harmony import */ var _utils_signInHelpers_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/signInHelpers.mjs */ "./dist/esm/providers/cognito/utils/signInHelpers.mjs");
 /* harmony import */ var _utils_oauth_generateCodeVerifier_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/oauth/generateCodeVerifier.mjs */ "./dist/esm/providers/cognito/utils/oauth/generateCodeVerifier.mjs");
 /* harmony import */ var _utils_oauth_generateState_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/oauth/generateState.mjs */ "./dist/esm/providers/cognito/utils/oauth/generateState.mjs");
 /* harmony import */ var _utils_oauth_getRedirectUrl_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/oauth/getRedirectUrl.mjs */ "./dist/esm/providers/cognito/utils/oauth/getRedirectUrl.mjs");
-/* harmony import */ var _utils_oauth_handleFailure_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../utils/oauth/handleFailure.mjs */ "./dist/esm/providers/cognito/utils/oauth/handleFailure.mjs");
-/* harmony import */ var _utils_oauth_completeOAuthFlow_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../utils/oauth/completeOAuthFlow.mjs */ "./dist/esm/providers/cognito/utils/oauth/completeOAuthFlow.mjs");
 /* harmony import */ var _utils_oauth_oAuthStore_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/oauth/oAuthStore.mjs */ "./dist/esm/providers/cognito/utils/oauth/oAuthStore.mjs");
-/* harmony import */ var _utils_oauth_createOAuthError_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/oauth/createOAuthError.mjs */ "./dist/esm/providers/cognito/utils/oauth/createOAuthError.mjs");
-
-
 
 
 
@@ -2968,30 +2960,31 @@ const oauthSignIn = async ({ oauthConfig, provider, clientId, customState, prefe
         .join('&');
     // TODO(v6): use URL object instead
     const oAuthUrl = `https://${domain}/oauth2/authorize?${queryString}`;
-    // the following is effective only in react-native as openAuthSession resolves only in react-native
-    const { type, error, url } = (await (0,_utils_openAuthSession_mjs__WEBPACK_IMPORTED_MODULE_10__.openAuthSession)(oAuthUrl)) ??
-        {};
-    try {
-        if (type === 'error') {
-            throw (0,_utils_oauth_createOAuthError_mjs__WEBPACK_IMPORTED_MODULE_11__.createOAuthError)(String(error));
-        }
-        if (type === 'success' && url) {
-            await (0,_utils_oauth_completeOAuthFlow_mjs__WEBPACK_IMPORTED_MODULE_12__.completeOAuthFlow)({
-                currentUrl: url,
-                clientId,
-                domain,
-                redirectUri,
-                responseType,
-                userAgentValue: (0,_utils_getAuthUserAgentValue_mjs__WEBPACK_IMPORTED_MODULE_13__.getAuthUserAgentValue)(_aws_amplify_core_internals_utils__WEBPACK_IMPORTED_MODULE_14__.AuthAction.SignInWithRedirect),
-                preferPrivateSession,
-            });
-        }
-    }
-    catch (error) {
-        await (0,_utils_oauth_handleFailure_mjs__WEBPACK_IMPORTED_MODULE_15__.handleFailure)(error);
-        // rethrow the error so it can be caught by `await signInWithRedirect()` in react-native
-        throw error;
-    }
+    return oAuthUrl;
+    // // the following is effective only in react-native as openAuthSession resolves only in react-native
+    // const { type, error, url } = {}
+    // 	(await openAuthSession(oAuthUrl, redirectSignIn, preferPrivateSession)) ??
+    // 	{};
+    // try {
+    // 	if (type === 'error') {
+    // 		throw createOAuthError(String(error));
+    // 	}
+    // 	if (type === 'success' && url) {
+    // 		await completeOAuthFlow({
+    // 			currentUrl: url,
+    // 			clientId,
+    // 			domain,
+    // 			redirectUri,
+    // 			responseType,
+    // 			userAgentValue: getAuthUserAgentValue(AuthAction.SignInWithRedirect),
+    // 			preferPrivateSession,
+    // 		});
+    // 	}
+    // } catch (error) {
+    // 	await handleFailure(error);
+    // 	// rethrow the error so it can be caught by `await signInWithRedirect()` in react-native
+    // 	throw error;
+    // }
 };
 
 
@@ -5596,21 +5589,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   handleOAuthSignOut: () => (/* binding */ handleOAuthSignOut)
 /* harmony export */ });
 /* harmony import */ var _completeOAuthSignOut_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./completeOAuthSignOut.mjs */ "./dist/esm/providers/cognito/utils/oauth/completeOAuthSignOut.mjs");
-/* harmony import */ var _oAuthSignOutRedirect_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./oAuthSignOutRedirect.mjs */ "./dist/esm/providers/cognito/utils/oauth/oAuthSignOutRedirect.mjs");
-
 
 
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const handleOAuthSignOut = async (cognitoConfig, store) => {
-    const { isOAuthSignIn } = await store.loadOAuthSignIn();
+    await store.loadOAuthSignIn();
     // Clear everything before attempting to visted logout endpoint since the current application
     // state could be wiped away on redirect
     await (0,_completeOAuthSignOut_mjs__WEBPACK_IMPORTED_MODULE_0__.completeOAuthSignOut)(store);
-    if (isOAuthSignIn) {
-        // On web, this will always end up being a void action
-        return (0,_oAuthSignOutRedirect_mjs__WEBPACK_IMPORTED_MODULE_1__.oAuthSignOutRedirect)(cognitoConfig);
-    }
 };
 
 
@@ -5644,45 +5631,6 @@ const resolveAndClearInflightPromises = () => {
 
 
 //# sourceMappingURL=inflightPromise.mjs.map
-
-
-/***/ }),
-
-/***/ "./dist/esm/providers/cognito/utils/oauth/oAuthSignOutRedirect.mjs":
-/*!*************************************************************************!*\
-  !*** ./dist/esm/providers/cognito/utils/oauth/oAuthSignOutRedirect.mjs ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   oAuthSignOutRedirect: () => (/* binding */ oAuthSignOutRedirect)
-/* harmony export */ });
-/* harmony import */ var _aws_amplify_core_internals_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @aws-amplify/core/internals/utils */ "../core/dist/esm/singleton/Auth/utils/index.mjs");
-/* harmony import */ var _utils_openAuthSession_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../utils/openAuthSession.mjs */ "./dist/esm/utils/openAuthSession.mjs");
-/* harmony import */ var _getRedirectUrl_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getRedirectUrl.mjs */ "./dist/esm/providers/cognito/utils/oauth/getRedirectUrl.mjs");
-
-
-
-
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
-const oAuthSignOutRedirect = async (authConfig, preferPrivateSession = false) => {
-    (0,_aws_amplify_core_internals_utils__WEBPACK_IMPORTED_MODULE_0__.assertOAuthConfig)(authConfig);
-    const { loginWith, userPoolClientId } = authConfig;
-    const { domain, redirectSignOut } = loginWith.oauth;
-    const signoutUri = (0,_getRedirectUrl_mjs__WEBPACK_IMPORTED_MODULE_1__.getRedirectUrl)(redirectSignOut);
-    const oAuthLogoutEndpoint = `https://${domain}/logout?${Object.entries({
-        client_id: userPoolClientId,
-        logout_uri: encodeURIComponent(signoutUri),
-    })
-        .map(([k, v]) => `${k}=${v}`)
-        .join('&')}`;
-    return (0,_utils_openAuthSession_mjs__WEBPACK_IMPORTED_MODULE_2__.openAuthSession)(oAuthLogoutEndpoint);
-};
-
-
-//# sourceMappingURL=oAuthSignOutRedirect.mjs.map
 
 
 /***/ }),
@@ -8849,32 +8797,6 @@ const getAuthUserAgentValue = (action, customUserAgentDetails) => (0,_aws_amplif
 
 
 //# sourceMappingURL=getAuthUserAgentValue.mjs.map
-
-
-/***/ }),
-
-/***/ "./dist/esm/utils/openAuthSession.mjs":
-/*!********************************************!*\
-  !*** ./dist/esm/utils/openAuthSession.mjs ***!
-  \********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   openAuthSession: () => (/* binding */ openAuthSession)
-/* harmony export */ });
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
-const openAuthSession = async (url) => {
-    if (!window?.location) {
-        return;
-    }
-    // enforce HTTPS
-    window.location.href = url.replace('http://', 'https://');
-};
-
-
-//# sourceMappingURL=openAuthSession.mjs.map
 
 
 /***/ }),

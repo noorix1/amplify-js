@@ -19,6 +19,6 @@ export const handleOAuthSignOut = async (
 
 	if (isOAuthSignIn) {
 		// On web, this will always end up being a void action
-		return oAuthSignOutRedirect(cognitoConfig);
+		//return oAuthSignOutRedirect(cognitoConfig);
 	}
 };

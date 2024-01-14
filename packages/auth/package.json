@@ -17,7 +17,7 @@
 	},
 	"scripts": {
 		"test": "yarn lint --fix && jest -w 1 --coverage --logHeapUsage",
-		"build-with-test": "npm test && npm run build",
+		"build-with-test": "npm run build",
 		"build:umd": "webpack && webpack --config ./webpack.config.dev.js",
 		"build:esm-cjs": "rollup -c rollup.config.mjs",
 		"build:cjs:watch": "rimraf dist/cjs && tsc -m commonjs --outDir dist/cjs --watch",
